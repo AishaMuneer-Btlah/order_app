@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: false),
       //home: HomeScreen(),
-      initialRoute: "/order",
+      initialRoute: "/signup",
       onGenerateRoute: AppRoutes.routeManager,
       // routes: {
       //   "/home":(ctx)=>HomeScreen(),

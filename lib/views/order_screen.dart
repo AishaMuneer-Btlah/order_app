@@ -119,6 +119,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),),
             ],),),),
       ),
+
       floatingActionButton: FloatingActionButton(onPressed: (){
         fKey.currentState!.validate();
         Navigator.pushNamed(context, "/thank",);

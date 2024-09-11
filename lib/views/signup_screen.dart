@@ -1,7 +1,10 @@
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project/viewmodels/city_vm.dart';
 import 'package:project/viewmodels/user_vm.dart';
 
@@ -23,6 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
  bool isReedCheck = false;
  String? selectedCity;
  CityVm cityVm = CityVm();
+ String? pathOfImage;
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +39,44 @@ class _SignupScreenState extends State<SignupScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-          Center(child: Container(
-            height: 70,width: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(35),
-              image: DecorationImage(image: AssetImage('assets/images/user.png',)),
-              color: Colors.blue,
+          Center(child: InkWell(
+            onTap: () async {
+              showDialog(context: context, builder: (ctx){
+                return AlertDialog(content:
+                  SizedBox(
+                    width: 300,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(child: Icon(Icons.folder_copy_outlined),onTap: () async{
+                          pathOfImage = await pickImage(ImageSource.gallery);
+                          setState(() {
+
+                          });
+                        },),
+                        InkWell(child: Icon(Icons.camera_alt_outlined),onTap: () async{
+                          pathOfImage = await pickImage(ImageSource.camera);
+                          setState(() {
+
+                          });
+                        },)
+                      ],
+                    ),
+                  ),);
+              });
+            },
+            child: Container(
+              height: 70,width: 70,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(35),
+                image: DecorationImage(
+                  image: pathOfImage==null?AssetImage('assets/images/user.png') :FileImage(File(pathOfImage!)),
+                  fit: BoxFit.fill,
+
+                //  image: FileImage(File(pathOfImage!)),
+                  //  image: AssetImage('assets/images/user.png',)
+                    ),
+              ),
             ),
           )),
             SizedBox(height: 20,),
@@ -136,4 +172,10 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     ));
   }
+  Future<String?> pickImage(ImageSource source) async {
+    ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: source);
+    return image?.path;
+
+         }
 }
